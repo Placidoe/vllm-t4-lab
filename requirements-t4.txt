@@ -1,0 +1,2 @@
+# Baseline validated on Kaggle T4. Re-check compatibility before changing CUDA/PyTorch.
+vllm==0.18.0
