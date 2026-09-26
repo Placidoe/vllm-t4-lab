@@ -44,6 +44,17 @@ bash scripts/run_public_sharegpt_serve_benchmark.sh
 原始 JSON；它不启用 `--save-detailed`，以免把原始对话或模型回复复制进实验产物。
 GPU CSV 是与该工作点同时间窗的硬件证据；TP、KV 配置、backend 和 server startup log 必须一起保存。
 
+固定 batch 作业结束后，使用仓库内的分析器生成报告和自绘 SVG；它会先检查 TP=1/2
+的模型、vLLM 版本、attention backend、KV 参数和采样参数是否一致。不一致或子任务失败时，
+不会绘制“speedup”结论。
+
+```bash
+python scripts/analyze_batch_matrix.py \
+  /kaggle/working/vllm_t4_results/batch_matrix_summary.json \
+  --report /kaggle/working/vllm_t4_results/offline-batch-report.md \
+  --chart /kaggle/working/vllm_t4_results/offline-batch-throughput.svg
+```
+
 | 阶段 | 并发 | 要回答的问题 |
 | --- | ---: | --- |
 | A | 1 | 可用性与单请求参考延迟是什么？ |

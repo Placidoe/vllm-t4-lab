@@ -10,6 +10,7 @@
 | 实验计划 | [benchmark-plan.md](benchmark-plan.md) | 并发矩阵、控制变量和记录模板 |
 | workload 协议 | [public-workloads.md](public-workloads.md) | 公开数据来源、可复现抽样、数据不入库与证据要求 |
 | 进行中基线 | [`benchmark_t4_batch_matrix.py`](../scripts/benchmark_t4_batch_matrix.py) | Kaggle T4 × 2 的固定 batch 与 TP=1/2 对照；结果以 JSON 产物为准 |
+| 结果分析 | [`analyze_batch_matrix.py`](../scripts/analyze_batch_matrix.py) | 强制配置可比性检查后，生成离线吞吐 Markdown 与自绘 SVG |
 | 在线压测 | [`run_public_sharegpt_serve_benchmark.sh`](../scripts/run_public_sharegpt_serve_benchmark.sh) | 公共 ShareGPT 的一次在线并发工作点；原始数据临时下载并删除 |
 | 硬件证据 | [`collect_gpu_metrics.sh`](../scripts/collect_gpu_metrics.sh) | 同时间窗的 `nvidia-smi` 指标，不记录请求内容 |
 | Kaggle 配置 | [`kernel-metadata.json`](../kernel-metadata.json) | 私有 GPU 内核的可复现入口与运行设置 |
