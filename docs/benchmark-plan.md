@@ -11,18 +11,19 @@ GPU：T4 × 1（第二阶段再做 T4 × 2 / TP=2）
 vLLM：0.18.0
 max_model_len：2048
 gpu_memory_utilization：0.70
-prompt 集合：固定；包含短/中/长三档
+prompt 集合：公开 ShareGPT；固定 seed 后按 tokenizer 分为短/中/长三档
 输出上限：固定 max_tokens
 采样：temperature=0 或固定 seed
 ```
 
-先启动服务：
+完整数据来源、筛选约束与证据字段见 [public-workloads.md](public-workloads.md)。先启动服务：
 
 ```bash
 bash scripts/serve_t4.sh
 ```
 
-然后以同一客户端、同一请求集，按并发梯度跑完每组。每组先 warm-up，再记录正式样本。
+然后以同一客户端、同一公开 request 集合，按并发梯度跑完每组。每组先 warm-up，再记录
+正式样本。初始正式样本量为每工作点 100 requests；所有工作点复用相同 dataset hash 和 seed。
 
 | 阶段 | 并发 | 要回答的问题 |
 | --- | ---: | --- |

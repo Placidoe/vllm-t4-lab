@@ -8,6 +8,7 @@
 | 深入原理 | [vllm-principles.md](vllm-principles.md) | Prefill/Decode、PagedAttention、连续批处理与指标 |
 | 模块设计 | [vllm-system-design.md](vllm-system-design.md) | Scheduler、KV manager、backend、并行、量化与投机解码 |
 | 实验计划 | [benchmark-plan.md](benchmark-plan.md) | 并发矩阵、控制变量和记录模板 |
+| workload 协议 | [public-workloads.md](public-workloads.md) | 公开数据来源、可复现抽样、数据不入库与证据要求 |
 | 进行中基线 | [`benchmark_t4_batch_matrix.py`](../scripts/benchmark_t4_batch_matrix.py) | Kaggle T4 × 2 的固定 batch 与 TP=1/2 对照；结果以 JSON 产物为准 |
 | Kaggle 配置 | [`kernel-metadata.json`](../kernel-metadata.json) | 私有 GPU 内核的可复现入口与运行设置 |
 | 实验报告 | [single T4 baseline](../reports/2026-09-25-single-t4-baseline.md) | 真实单卡 T4 基线、排障链路和结果边界 |
