@@ -28,6 +28,13 @@ bash scripts/serve_t4.sh
 在 Kaggle 中启动服务后，每个并发点使用同一 wrapper：
 
 ```bash
+TP=1 GPU_MEMORY_UTILIZATION=0.70 MAX_MODEL_LEN=2048 \
+bash scripts/serve_t4.sh > /kaggle/working/vllm_t4_results/server-tp1.log 2>&1 &
+
+GPU_METRICS_OUTPUT=/kaggle/working/vllm_t4_results/gpu-tp1-c16.csv \
+INTERVAL_SECONDS=1 DURATION_SECONDS=300 \
+bash scripts/collect_gpu_metrics.sh &
+
 MAX_CONCURRENCY=16 \
 BENCHMARK_OUTPUT_DIR=/kaggle/working/vllm_t4_results/online_sharegpt \
 bash scripts/run_public_sharegpt_serve_benchmark.sh
@@ -35,6 +42,7 @@ bash scripts/run_public_sharegpt_serve_benchmark.sh
 
 脚本会从公开 ShareGPT URL 临时下载数据、写入数据 SHA-256 到结果 metadata，并在退出时删除
 原始 JSON；它不启用 `--save-detailed`，以免把原始对话或模型回复复制进实验产物。
+GPU CSV 是与该工作点同时间窗的硬件证据；TP、KV 配置、backend 和 server startup log 必须一起保存。
 
 | 阶段 | 并发 | 要回答的问题 |
 | --- | ---: | --- |
