@@ -15,6 +15,7 @@
 | 硬件证据 | [`collect_gpu_metrics.sh`](../scripts/collect_gpu_metrics.sh) | 同时间窗的 `nvidia-smi` 指标，不记录请求内容 |
 | Kaggle 配置 | [`kernel-metadata.json`](../kernel-metadata.json) | 私有 GPU 内核的可复现入口与运行设置 |
 | 实验报告 | [single T4 baseline](../reports/2026-09-25-single-t4-baseline.md) | 真实单卡 T4 基线、排障链路和结果边界 |
+| 双卡基线 | [T4 × 2 batch matrix](../reports/2026-09-27-kaggle-t4x2-batch-matrix.md) | TP=1/2 的成功离线吞吐对照与可复核聚合 JSON |
 | 兼容性报告 | [Kaggle backend compatibility](../reports/2026-09-26-kaggle-backend-compatibility.md) | FlashInfer JIT 链接失败的原始证据、归因与修复边界 |
 | 可运行代码 | [`scripts/`](../scripts) | 最小生成和 OpenAI-compatible serving |
 | Kaggle Notebook | [`notebooks/`](../notebooks) | 干净的单卡 T4 baseline |

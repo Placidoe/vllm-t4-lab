@@ -1,0 +1,53 @@
+{
+  "schema_version": 1,
+  "status": "ok",
+  "collected_at_utc": "2026-09-26T17:59:00Z",
+  "environment": {
+    "platform": "Kaggle interactive notebook",
+    "gpus": ["Tesla T4 14.562 GiB", "Tesla T4 14.562 GiB"],
+    "model": "Qwen/Qwen2.5-1.5B-Instruct",
+    "vllm_version": "0.18.0",
+    "dtype": "half",
+    "attention_backend": "TRITON_ATTN",
+    "max_model_len": 2048,
+    "gpu_memory_utilization": 0.8,
+    "enforce_eager": false,
+    "prefix_caching": true,
+    "chunked_prefill_max_num_batched_tokens": 8192
+  },
+  "workload": {
+    "type": "offline_fixed_batch_generation",
+    "prompt_source": "self-authored fixed smoke-control prompt",
+    "repeats": 2,
+    "temperature": 0.0,
+    "max_tokens": 64,
+    "batch_sizes": [1, 4, 8, 16]
+  },
+  "measurements": {
+    "tp1": {
+      "gpu_free_gib_after_model_load": [2.159, 14.46],
+      "rows": [
+        {"batch_size": 1, "mean_seconds": 0.9401, "mean_output_tokens": 64, "output_tokens_per_second": 68.084, "requests_per_second": 1.064},
+        {"batch_size": 4, "mean_seconds": 0.9812, "mean_output_tokens": 256, "output_tokens_per_second": 260.912, "requests_per_second": 4.077},
+        {"batch_size": 8, "mean_seconds": 0.9918, "mean_output_tokens": 491, "output_tokens_per_second": 495.084, "requests_per_second": 8.067},
+        {"batch_size": 16, "mean_seconds": 1.0794, "mean_output_tokens": 1024, "output_tokens_per_second": 948.685, "requests_per_second": 14.823}
+      ]
+    },
+    "tp2": {
+      "gpu_free_gib_after_model_load": [1.899, 1.899],
+      "rows": [
+        {"batch_size": 1, "mean_seconds": 0.5201, "mean_output_tokens": 61, "output_tokens_per_second": 117.291, "requests_per_second": 1.923},
+        {"batch_size": 4, "mean_seconds": 0.6055, "mean_output_tokens": 254.5, "output_tokens_per_second": 420.756, "requests_per_second": 6.606},
+        {"batch_size": 8, "mean_seconds": 0.606, "mean_output_tokens": 488, "output_tokens_per_second": 805.488, "requests_per_second": 13.201},
+        {"batch_size": 16, "mean_seconds": 0.7883, "mean_output_tokens": 1012, "output_tokens_per_second": 1283.935, "requests_per_second": 20.296}
+      ]
+    }
+  },
+  "provenance": {
+    "runner": "scripts/benchmark_t4_batch_matrix.py",
+    "backend_fix_commit": "0ce0394",
+    "raw_public_dataset_conversations_stored": false,
+    "raw_per-repeat_samples_exported": false,
+    "note": "This is the verified aggregate copied from the successful Kaggle interactive-session JSON. Future saved-version runs should retain the full JSON alongside this aggregate."
+  }
+}
