@@ -1,5 +1,11 @@
 # Kaggle T4 × 2：attention backend 兼容性记录
 
+> 更新（2026-09-27）：Kaggle T4 实测确认，`vllm==0.18.0` 不会消费旧的
+> `VLLM_ATTENTION_BACKEND` 环境变量。可复现修复是向 `LLM` 传入
+> `attention_config={"backend": AttentionBackendEnum.TRITON_ATTN}`。该结论来自
+> 同一 Kaggle 会话中对实际 `LLM` 签名、`AttentionConfig` 与 backend 枚举的检查；修复后
+> 仍须完成 TP=1/TP=2 矩阵才能产生吞吐结论。
+
 ## 结论
 
 第一次可复现批处理运行没有产生吞吐数字。`vllm==0.18.0` 在 Kaggle 的干净镜像中自动
@@ -40,10 +46,10 @@ RuntimeError: Ninja build failed
 
 ## 修复与验证边界
 
-下一版批处理脚本在 child worker import/engine 初始化前固定：
+下一版批处理脚本以 vLLM 0.18 的 typed config 固定 backend：
 
-```bash
-VLLM_ATTENTION_BACKEND=TRITON_ATTN
+```python
+attention_config={"backend": AttentionBackendEnum.TRITON_ATTN}
 ```
 
 这不是泛化建议。它只针对当前 Kaggle T4 环境与 `vllm==0.18.0`：本仓库已有单卡基线

@@ -15,7 +15,6 @@ from __future__ import annotations
 
 import argparse
 import json
-import os
 import statistics
 import subprocess
 import sys
@@ -78,6 +77,7 @@ def run(args: argparse.Namespace) -> dict:
     import torch
     import vllm
     from vllm import LLM, SamplingParams
+    from vllm.v1.attention.backends.registry import AttentionBackendEnum
 
     if not torch.cuda.is_available():
         raise RuntimeError("CUDA unavailable: enable Kaggle T4 x2 before running.")
@@ -98,6 +98,11 @@ def run(args: argparse.Namespace) -> dict:
         gpu_memory_utilization=0.80,
         seed=7,
         enforce_eager=args.enforce_eager,
+        # vLLM 0.18 selects FlashInfer automatically on this Kaggle image.
+        # That backend JIT-links against libcuda, which the image does not
+        # expose to its linker. The legacy environment variable is not
+        # consumed by this release; use the typed backend configuration.
+        attention_config={"backend": AttentionBackendEnum.TRITON_ATTN},
     )
     after_load = gpu_snapshot()
 
@@ -164,11 +169,6 @@ def main() -> None:
     parser.add_argument("--output-dir", type=Path, default=Path("/kaggle/working/vllm_t4_results"))
     parser.add_argument("--enforce-eager", action="store_true")
     args = parser.parse_args()
-    # vLLM's automatic choice in this clean Kaggle image is FlashInfer. Its
-    # on-the-fly extension link fails because the image has no libcuda linker
-    # entry. TRITON_ATTN was separately verified on this T4 environment; set
-    # it before importing/initializing the engine in either child process.
-    os.environ["VLLM_ATTENTION_BACKEND"] = ATTENTION_BACKEND
     args.output_dir.mkdir(parents=True, exist_ok=True)
     if args.tp is None:
         # vLLM owns CUDA workers.  Isolating TP=1 and TP=2 in child processes
