@@ -1,0 +1,16 @@
+{
+  "id": "placideo/vllm-t4-batch-matrix-and-tensor-parallel-study",
+  "title": "vLLM T4 batch matrix and tensor-parallel study",
+  "code_file": "scripts/benchmark_t4_batch_matrix.py",
+  "language": "python",
+  "kernel_type": "script",
+  "is_private": "true",
+  "enable_gpu": "true",
+  "enable_tpu": "false",
+  "enable_internet": "true",
+  "machine_shape": "",
+  "dataset_sources": [],
+  "competition_sources": [],
+  "kernel_sources": [],
+  "model_sources": []
+}

@@ -48,6 +48,15 @@ vLLM 版本前应先重新测量。
 3. 用 [scripts/serve_t4.sh](scripts/serve_t4.sh) 启动 OpenAI 兼容服务。
 4. 按 [docs/benchmark-plan.md](docs/benchmark-plan.md) 做 1 / 4 / 16 / 32 并发对照。
 
+## 进行中的实验
+
+[`scripts/benchmark_t4_batch_matrix.py`](scripts/benchmark_t4_batch_matrix.py) 是独立的
+T4 × 2 批处理基线：在全新 Kaggle 环境中锁定 `vllm==0.18.0`，分别以 TP=1 和 TP=2
+运行 batch=1/4/8/16，并将原始 JSON 写到 `vllm_t4_results/`。它只回答固定 batch 的
+decode 吞吐与 TP 扩展是否有收益；在线服务的 TTFT/P95 曲线仍以压测计划中的后续阶段为准。
+
+对应的私有 Kaggle 内核：[vLLM T4 batch matrix and tensor-parallel study](https://www.kaggle.com/code/placideo/vllm-t4-batch-matrix-and-tensor-parallel-study)。
+
 ## 实验纪律
 
 - 固定模型、prompt 集合、`max_tokens` 与随机参数。
