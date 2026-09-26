@@ -24,6 +24,7 @@ PagedAttention、KV Cache、连续批处理和吞吐量测量。
 docs/       原理、兼容性说明与压测方法
 reports/    已完成实验的可解释结果
 scripts/    最小推理、服务启动、压测命令
+papers/     外部论文、阅读笔记与自主技术写作
 ```
 
 ## 快速开始（Kaggle T4）
