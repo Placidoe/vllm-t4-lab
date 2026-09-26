@@ -29,6 +29,7 @@ BATCH_SIZES = (1, 4, 8, 16)
 REPEATS = 2
 MAX_TOKENS = 64
 VLLM_VERSION = "0.18.0"
+ATTENTION_BACKEND = "TRITON_ATTN"
 PROMPT = (
     "Explain, in exactly two concise sentences, why an LLM inference engine "
     "needs a KV cache and how batching affects throughput."
@@ -140,6 +141,7 @@ def run(args: argparse.Namespace) -> dict:
         "benchmark_type": "offline_fixed_batch_generation",
         "model": MODEL,
         "vllm_version": vllm.__version__,
+        "attention_backend_requested": ATTENTION_BACKEND,
         "tensor_parallel_size": args.tp,
         "gpu_count_visible": torch.cuda.device_count(),
         "gpu_after_model_load": after_load,
@@ -162,6 +164,11 @@ def main() -> None:
     parser.add_argument("--output-dir", type=Path, default=Path("/kaggle/working/vllm_t4_results"))
     parser.add_argument("--enforce-eager", action="store_true")
     args = parser.parse_args()
+    # vLLM's automatic choice in this clean Kaggle image is FlashInfer. Its
+    # on-the-fly extension link fails because the image has no libcuda linker
+    # entry. TRITON_ATTN was separately verified on this T4 environment; set
+    # it before importing/initializing the engine in either child process.
+    os.environ["VLLM_ATTENTION_BACKEND"] = ATTENTION_BACKEND
     args.output_dir.mkdir(parents=True, exist_ok=True)
     if args.tp is None:
         # vLLM owns CUDA workers.  Isolating TP=1 and TP=2 in child processes
@@ -200,6 +207,7 @@ def main() -> None:
         result = {
             "status": "failed",
             "tensor_parallel_size": args.tp,
+            "attention_backend_requested": ATTENTION_BACKEND,
             "error_type": type(exc).__name__,
             "error": str(exc),
         }

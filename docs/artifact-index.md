@@ -11,6 +11,7 @@
 | 进行中基线 | [`benchmark_t4_batch_matrix.py`](../scripts/benchmark_t4_batch_matrix.py) | Kaggle T4 × 2 的固定 batch 与 TP=1/2 对照；结果以 JSON 产物为准 |
 | Kaggle 配置 | [`kernel-metadata.json`](../kernel-metadata.json) | 私有 GPU 内核的可复现入口与运行设置 |
 | 实验报告 | [single T4 baseline](../reports/2026-09-25-single-t4-baseline.md) | 真实单卡 T4 基线、排障链路和结果边界 |
+| 兼容性报告 | [Kaggle backend compatibility](../reports/2026-09-26-kaggle-backend-compatibility.md) | FlashInfer JIT 链接失败的原始证据、归因与修复边界 |
 | 可运行代码 | [`scripts/`](../scripts) | 最小生成和 OpenAI-compatible serving |
 | Kaggle Notebook | [`notebooks/`](../notebooks) | 干净的单卡 T4 baseline |
 | 论文材料 | [`papers/`](../papers) | 论文索引、阅读笔记模板与自有技术写作目录 |
