@@ -7,10 +7,10 @@
 
 ```text
 模型：Qwen/Qwen2.5-1.5B-Instruct
-GPU：T4 × 1（第二阶段再做 T4 × 2 / TP=2）
+GPU：T4 × 2（离线矩阵已完成 TP=1 / TP=2；在线阶段延续该对照）
 vLLM：0.18.0
 max_model_len：2048
-gpu_memory_utilization：0.70
+gpu_memory_utilization：0.80
 prompt 集合：公开 ShareGPT；固定 seed 后按 tokenizer 分为短/中/长三档
 输出上限：固定 max_tokens
 采样：temperature=0 或固定 seed
@@ -55,13 +55,18 @@ python scripts/analyze_batch_matrix.py \
   --chart /kaggle/working/vllm_t4_results/offline-batch-throughput.svg
 ```
 
-| 阶段 | 并发 | 要回答的问题 |
-| --- | ---: | --- |
-| A | 1 | 可用性与单请求参考延迟是什么？ |
-| B | 4 | 连续批处理开始带来多少 aggregate throughput？ |
-| C | 16 | 吞吐增长是否仍快于尾延迟恶化？ |
-| D | 32 | 是否触及 KV / 排队 / 调度饱和点？ |
-| E | TP=2 对照 | 更多显存是否抵过 T4 PCIe 通信成本？ |
+| 阶段 | 状态 | 并发 | 要回答的问题 |
+| --- | --- | ---: | --- |
+| A0 | 已完成 | fixed batch 1/4/8/16 | TP=2 是否提升离线 decode 吞吐？答案：是，1.353×–1.723×。 |
+| A | 待运行 | 1 | 可用性与单请求参考延迟是什么？ |
+| B | 待运行 | 4 | 连续批处理开始带来多少 aggregate throughput？ |
+| C | 待运行 | 16 | 吞吐增长是否仍快于尾延迟恶化？ |
+| D | 待运行 | 32 | 是否触及 KV / 排队 / 调度饱和点？ |
+| E | 待运行 | TP=1/TP=2 | 在线 TP 收益是否抵过 T4 PCIe 通信成本？ |
+
+> A0 的实测配置、原始聚合值和解释在
+> [双 T4 离线基线报告](../reports/2026-09-27-kaggle-t4x2-batch-matrix.md)。A–E 是在线服务实验；
+> 不得用 A0 的 `output tok/s` 替代 TTFT、TPOT、P95 或线上 QPS。
 
 ![continuous batching under concurrency](../assets/diagrams/continuous-batching.svg)
 

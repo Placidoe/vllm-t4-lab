@@ -20,6 +20,23 @@ PagedAttention、KV Cache、连续批处理和吞吐量测量。
 
 完整边界与实验条件见 [reports/2026-09-25-single-t4-baseline.md](reports/2026-09-25-single-t4-baseline.md)。
 
+### 最新：T4 × 2 离线 TP 基线（已完成）
+
+在同一 Kaggle T4 × 2 会话、`Qwen/Qwen2.5-1.5B-Instruct`、`vllm==0.18.0`、FP16、
+`TRITON_ATTN`、`max_model_len=2048`、`gpu_memory_utilization=0.80` 下，TP=2 在固定 batch
+decode 工作点均快于 TP=1：
+
+| batch | TP=1 output tok/s | TP=2 output tok/s | TP=2 / TP=1 |
+| ---: | ---: | ---: | ---: |
+| 1 | 68.084 | 117.291 | 1.723× |
+| 4 | 260.912 | 420.756 | 1.613× |
+| 8 | 495.084 | 805.488 | 1.627× |
+| 16 | 948.685 | **1,283.935** | **1.353×** |
+
+这证明该离线工作负载上 TP=2 有收益；它**不**代表在线服务 QPS、TTFT、TPOT 或 P95。
+可复核口径、环境和聚合结果见 [双 T4 报告](reports/2026-09-27-kaggle-t4x2-batch-matrix.md)，
+当前阶段及未完成项见 [实验状态](reports/2026-09-27-experiment-status.md)。
+
 ## 仓库结构
 
 ```text
@@ -48,14 +65,15 @@ vLLM 版本前应先重新测量。
 3. 用 [scripts/serve_t4.sh](scripts/serve_t4.sh) 启动 OpenAI 兼容服务。
 4. 按 [docs/benchmark-plan.md](docs/benchmark-plan.md) 做 1 / 4 / 16 / 32 并发对照。
 
-## 进行中的实验
+## 实验状态与下一步
 
-[`scripts/benchmark_t4_batch_matrix.py`](scripts/benchmark_t4_batch_matrix.py) 是独立的
-T4 × 2 批处理基线：在全新 Kaggle 环境中锁定 `vllm==0.18.0`，分别以 TP=1 和 TP=2
-运行 batch=1/4/8/16，并将原始 JSON 写到 `vllm_t4_results/`。它只回答固定 batch 的
-decode 吞吐与 TP 扩展是否有收益；在线服务的 TTFT/P95 曲线仍以压测计划中的后续阶段为准。
+[`scripts/benchmark_t4_batch_matrix.py`](scripts/benchmark_t4_batch_matrix.py) 的 T4 × 2 固定
+batch 对照已经完成并归档。当前下一项不是重复这组离线结果，而是用公开 ShareGPT 临时工作负载
+运行 TP=1/TP=2、并发 1/4/16 的在线服务矩阵，记录 TTFT、TPOT、P95、aggregate output tok/s
+和同时间窗 GPU 指标。原始对话、提示词和回复不进入仓库。
 
-对应的私有 Kaggle 内核：[vLLM T4 batch matrix and tensor-parallel study](https://www.kaggle.com/code/placideo/vllm-t4-batch-matrix-and-tensor-parallel-study)。
+最近的 Kaggle 保存版本被取消，因而没有新结果；已完成基线不受影响。对应的私有 Kaggle
+内核：[vLLM T4 batch matrix and tensor-parallel study](https://www.kaggle.com/code/placideo/vllm-t4-batch-matrix-and-tensor-parallel-study)。
 
 ## 实验纪律
 
