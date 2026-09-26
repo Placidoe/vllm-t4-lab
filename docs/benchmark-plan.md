@@ -25,6 +25,17 @@ bash scripts/serve_t4.sh
 然后以同一客户端、同一公开 request 集合，按并发梯度跑完每组。每组先 warm-up，再记录
 正式样本。初始正式样本量为每工作点 100 requests；所有工作点复用相同 dataset hash 和 seed。
 
+在 Kaggle 中启动服务后，每个并发点使用同一 wrapper：
+
+```bash
+MAX_CONCURRENCY=16 \
+BENCHMARK_OUTPUT_DIR=/kaggle/working/vllm_t4_results/online_sharegpt \
+bash scripts/run_public_sharegpt_serve_benchmark.sh
+```
+
+脚本会从公开 ShareGPT URL 临时下载数据、写入数据 SHA-256 到结果 metadata，并在退出时删除
+原始 JSON；它不启用 `--save-detailed`，以免把原始对话或模型回复复制进实验产物。
+
 | 阶段 | 并发 | 要回答的问题 |
 | --- | ---: | --- |
 | A | 1 | 可用性与单请求参考延迟是什么？ |
