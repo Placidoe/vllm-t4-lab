@@ -5,6 +5,8 @@ PagedAttention、KV Cache、连续批处理和吞吐量测量。
 
 > 这不是训练仓库。vLLM 是推理与服务引擎；这里的“实验脚本”用于启动、验证和压测推理服务。
 
+![vLLM serving path](assets/diagrams/serving-path.svg)
+
 ## 已验证基线
 
 | 项目 | 结果 |
@@ -51,3 +53,6 @@ vLLM 版本前应先重新测量。
 - 固定模型、prompt 集合、`max_tokens` 与随机参数。
 - 先 warm-up，再记录 TTFT、P50/P95、总 output tok/s 与 KV 使用情况。
 - 单请求 token/s 不是 vLLM 的核心胜负手；混合长度、多并发请求下的持续吞吐才是。
+
+完整的模块设计图、原理边界与指标关系见 [docs/vllm-system-design.md](docs/vllm-system-design.md)。
+仓库文档、图、代码与实验产物的完整映射见 [docs/artifact-index.md](docs/artifact-index.md)。

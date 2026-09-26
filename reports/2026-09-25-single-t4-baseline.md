@@ -3,6 +3,8 @@
 **日期**：2026-09-25  
 **目的**：验证 Kaggle T4 环境可稳定运行 vLLM，并建立后续并发压测的对照点。
 
+![T4 baseline](../assets/diagrams/t4-baseline.svg)
+
 ## 配置
 
 | 类别 | 值 |

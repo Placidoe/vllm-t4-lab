@@ -32,6 +32,8 @@ bash scripts/serve_t4.sh
 | D | 32 | 是否触及 KV / 排队 / 调度饱和点？ |
 | E | TP=2 对照 | 更多显存是否抵过 T4 PCIe 通信成本？ |
 
+![continuous batching under concurrency](../assets/diagrams/continuous-batching.svg)
+
 ## 每组必记指标
 
 | 指标 | 为什么重要 |

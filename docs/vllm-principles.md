@@ -16,6 +16,8 @@ flowchart LR
 核心分工是：Scheduler 决定“谁前进一步”，KV manager 决定“历史放哪里”，
 attention backend 决定“怎样读历史”，Worker 负责“怎样算这一轮”，Sampler 决定“下一 token”。
 
+![vLLM serving path](../assets/diagrams/serving-path.svg)
+
 ## 1. Prefill 与 Decode：两种完全不同的负载
 
 ```mermaid
@@ -62,6 +64,8 @@ flowchart TB
 代价是块表查找、非连续访存与最后一个 block 的少量浪费；收益是大幅降低内部碎片，
 让更多活跃序列留在同一张卡上。
 
+![paged KV mapping](../assets/diagrams/paged-kv.svg)
+
 ## 3. 连续批处理：每个调度步都重组 batch
 
 传统静态 batch 要等整批都结束，短请求会被长请求拖住。vLLM 在每轮调度中重估可用
@@ -85,6 +89,8 @@ flowchart LR
 
 这也是 vLLM 的“高吞吐”来源：不是让单个 token 的数学更快，而是减少 GPU 等待、KV 浪费和
 静态 batch 的空洞。
+
+![continuous batching](../assets/diagrams/continuous-batching.svg)
 
 ## 4. Attention backend 与图执行
 

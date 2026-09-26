@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="460" viewBox="0 0 1200 460" role="img" aria-labelledby="title desc">
+  <title id="title">连续批处理的三个调度步</title><desc id="desc">短请求结束后立刻释放位置与 KV blocks，新请求进入下一轮批次，长期请求不会阻塞整个静态 batch。</desc>
+  <rect width="1200" height="460" rx="24" fill="#071a2a"/>
+  <text x="56" y="62" fill="#f8fafc" font-size="28" font-family="system-ui" font-weight="700">连续批处理：每一步都重新组成 GPU batch</text>
+  <text x="56" y="92" fill="#bae6fd" font-size="16" font-family="system-ui">结束的请求即时离开；等待请求无需等待整批完成</text>
+  <g font-family="system-ui"><text x="110" y="150" fill="#e2e8f0" font-size="19" font-weight="700">step t</text><text x="455" y="150" fill="#e2e8f0" font-size="19" font-weight="700">step t + 1</text><text x="800" y="150" fill="#e2e8f0" font-size="19" font-weight="700">step t + 2</text></g>
+  <g stroke="#334155" stroke-width="2"><line x1="94" y1="179" x2="1097" y2="179"/><line x1="94" y1="285" x2="1097" y2="285"/><line x1="94" y1="391" x2="1097" y2="391"/></g>
+  <g font-family="system-ui" text-anchor="middle" font-size="17" font-weight="700"><rect x="120" y="194" width="250" height="62" rx="12" fill="#2563eb"/><text x="245" y="233" fill="#dbeafe">A decode</text><rect x="120" y="300" width="250" height="62" rx="12" fill="#7c3aed"/><text x="245" y="339" fill="#ede9fe">B decode</text><rect x="460" y="194" width="250" height="62" rx="12" fill="#2563eb"/><text x="585" y="233" fill="#dbeafe">A decode</text><rect x="460" y="300" width="250" height="62" rx="12" fill="#34d399"/><text x="585" y="339" fill="#d1fae5">C prefill enters</text><rect x="800" y="194" width="250" height="62" rx="12" fill="#2563eb"/><text x="925" y="233" fill="#dbeafe">A decode</text><rect x="800" y="300" width="250" height="62" rx="12" fill="#34d399"/><text x="925" y="339" fill="#d1fae5">C decode</text></g>
+  <g font-family="system-ui" fill="#fda4af" font-size="15"><text x="202" y="275">B completes → release KV</text><text x="542" y="382">D waiting</text><text x="882" y="382">D can enter next</text></g>
+</svg>

@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="460" viewBox="0 0 1200 460" role="img" aria-labelledby="title desc">
+  <title id="title">vLLM 一次请求的服务路径</title><desc id="desc">请求进入调度器，调度器协调 KV Cache 后派发动态 batch 给 GPU worker，attention backend 读取 paged KV，sampler 返回 token。</desc>
+  <defs><marker id="a" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0 0 L0 6 L9 3z" fill="#60a5fa"/></marker></defs>
+  <rect width="1200" height="460" rx="24" fill="#0b1020"/>
+  <text x="56" y="64" fill="#f8fafc" font-size="28" font-family="system-ui" font-weight="700">vLLM：把推理变成显存与 token 的协同调度</text>
+  <text x="56" y="94" fill="#bfdbfe" font-size="16" font-family="system-ui">模型语义不变；优化发生在 batch、KV 内存和 GPU 执行路径</text>
+  <g font-family="system-ui" text-anchor="middle"><rect x="62" y="178" width="150" height="98" rx="16" fill="#172554" stroke="#60a5fa"/><text x="137" y="218" fill="#dbeafe" font-size="20" font-weight="700">Requests</text><text x="137" y="246" fill="#93c5fd" font-size="14">不同长度 / 阶段</text>
+  <rect x="292" y="178" width="170" height="98" rx="16" fill="#312e81" stroke="#a5b4fc"/><text x="377" y="218" fill="#eef2ff" font-size="20" font-weight="700">Scheduler</text><text x="377" y="246" fill="#c7d2fe" font-size="14">本轮 token 预算</text>
+  <rect x="542" y="178" width="170" height="98" rx="16" fill="#3f2b05" stroke="#fcd34d"/><text x="627" y="218" fill="#fef3c7" font-size="20" font-weight="700">GPU Worker</text><text x="627" y="246" fill="#fde68a" font-size="14">动态 batch 执行</text>
+  <rect x="792" y="178" width="170" height="98" rx="16" fill="#4c1d3b" stroke="#f9a8d4"/><text x="877" y="218" fill="#fce7f3" font-size="20" font-weight="700">Attention</text><text x="877" y="246" fill="#fbcfe8" font-size="14">按 block table 读 KV</text>
+  <rect x="1042" y="178" width="110" height="98" rx="16" fill="#064e3b" stroke="#6ee7b7"/><text x="1097" y="218" fill="#d1fae5" font-size="20" font-weight="700">Token</text><text x="1097" y="246" fill="#a7f3d0" font-size="14">Sampler</text></g>
+  <g stroke="#60a5fa" stroke-width="4" fill="none" marker-end="url(#a)"><path d="M212 227 H282"/><path d="M462 227 H532"/><path d="M712 227 H782"/><path d="M962 227 H1032"/></g>
+  <rect x="408" y="344" width="384" height="72" rx="16" fill="#111827" stroke="#64748b"/><text x="600" y="374" fill="#f8fafc" font-size="19" font-family="system-ui" text-anchor="middle" font-weight="700">Paged KV Cache manager</text><text x="600" y="400" fill="#94a3b8" font-size="14" font-family="system-ui" text-anchor="middle">分配、共享、回收物理 blocks</text>
+  <path d="M377 276 V344 H408" fill="none" stroke="#a5b4fc" stroke-width="4" marker-end="url(#a)"/><path d="M627 344 V286" fill="none" stroke="#fcd34d" stroke-width="4" marker-end="url(#a)"/><path d="M792 344 V286" fill="none" stroke="#f9a8d4" stroke-width="4" marker-end="url(#a)"/>
+</svg>
